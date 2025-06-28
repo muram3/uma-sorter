@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>馬番 並び替えツール</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f5f5f5">
+  <style>
+    body { font-family: sans-serif; padding: 1em; background: #f5f5f5; }
+    .container { max-width: 400px; margin: auto; }
+    select, button { font-size: 1.1em; padding: 8px 12px; margin: 8px 0; }
+    .horse-list { list-style: none; padding: 0; }
+    .horse-item {
+      padding: 12px; margin: 6px 0; border-radius: 6px; color: black;
+      text-align: center; font-size: 18px; background: lightgray;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .horse-item.black { color: white; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>馬番 並び替えツール</h2>
+  <label>頭数:
+    <select id="headCount" style="font-size: 1.1em; padding: 6px 12px; margin-left: 8px;"></select>
+  </label>
+  <div><button id="resetBtn">リセット</button></div>
+  <ul id="horseList" class="horse-list"></ul>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const circled = ["①","②","③","④","⑤","⑥","⑦","⑧","⑨","⑩","⑪","⑫","⑬","⑭","⑮","⑯","⑰","⑱"];
+
+  function getWakuColor(num, total) {
+    const wakuRules = {
+      5:[[1],[2],[3],[4],[5],[6],[7],[8]],
+      6:[[1],[2],[3],[4],[5],[6],[7],[8]],
+      7:[[1],[2],[3],[4],[5],[6],[7],[8]],
+      8:[[1],[2],[3],[4],[5],[6],[7],[8]],
+      9:[[1],[2],[3],[4],[5],[6],[7],[8,9]],
+      10:[[1],[2],[3],[4],[5],[6],[7,8],[9,10]],
+      11:[[1],[2],[3],[4],[5],[6,7],[8,9],[10,11]],
+      12:[[1],[2],[3],[4],[5,6],[7,8],[9,10],[11,12]],
+      13:[[1],[2],[3],[4,5],[6,7],[8,9],[10,11],[12,13]],
+      14:[[1],[2],[3,4],[5,6],[7,8],[9,10],[11,12],[13,14]],
+      15:[[1],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13],[14,15]],
+      16:[[1,2],[3,4],[5,6],[7,8],[9,10],[11,12],[13,14],[15,16]],
+      17:[[1,2],[3,4],[5,6],[7,8],[9,10],[11,12],[13,14],[15,16,17]],
+      18:[[1,2],[3,4],[5,6],[7,8],[9,10],[11,12],[13,14,15],[16,17,18]]
+    };
+    const colors = ['#f5f5f5', '#333333', '#dc3c3c', '#2c53a9', '#e4ca3b', '#58af4a', '#de8a26', '#dc6179'];
+    const rules = wakuRules[total] || [];
+    for (let i = 0; i < rules.length; i++) {
+      if (rules[i].includes(num)) return colors[i];
+    }
+    return '#cccccc';
+  }
+
+  const headSelect = document.getElementById('headCount');
+  for (let i = 5; i <= 18; i++) {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${i}頭`;
+    headSelect.appendChild(opt);
+  }
+
+  let currentHeadCount = 16;
+  headSelect.value = currentHeadCount;
+
+  let sortable;
+  function renderHorseList(total) {
+    const list = document.getElementById('horseList');
+    list.innerHTML = '';
+    for (let i = 1; i <= total; i++) {
+      const li = document.createElement('li');
+      li.className = 'horse-item';
+      li.textContent = circled[i - 1];
+      const color = getWakuColor(i, total);
+      li.style.background = color;
+      if (color === '#333333') li.classList.add('black');
+      const hideBtn = document.createElement('button');
+      hideBtn.textContent = '×';
+      hideBtn.style.float = 'right';
+      hideBtn.style.fontSize = '1.1em';
+      hideBtn.style.padding = '2px 8px';
+      hideBtn.onclick = () => { li.style.display = 'none'; };
+      li.appendChild(hideBtn);
+      list.appendChild(li);
+    }
+    if (sortable) sortable.destroy();
+    sortable = Sortable.create(list, { animation: 150 });
+  }
+
+  renderHorseList(currentHeadCount);
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    renderHorseList(currentHeadCount);
+  });
+
+  headSelect.addEventListener('change', (e) => {
+    currentHeadCount = parseInt(e.target.value);
+    renderHorseList(currentHeadCount);
+  });
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+});
+</script>
+</body>
+</html>
