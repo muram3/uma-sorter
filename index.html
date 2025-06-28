@@ -23,7 +23,7 @@
 <div class="container">
   <h2>馬番 並び替えツール</h2>
   <label>頭数:
-    <select id="headCount"></select>
+    <select id="headCount" style="font-size: 1.1em; padding: 6px 12px; margin-left: 8px;"></select>
   </label>
   <div><button id="resetBtn">リセット</button></div>
   <ul id="horseList" class="horse-list"></ul>
@@ -112,6 +112,14 @@
   }
 
   let currentHeadCount = 16;
+headSelect.innerHTML = "";
+for (let i = 5; i <= 18; i++) {
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = `${i}頭`;
+  headSelect.appendChild(opt);
+}
+headSelect.value = currentHeadCount;
   headSelect.value = currentHeadCount;
   renderHorseList(currentHeadCount);
 
