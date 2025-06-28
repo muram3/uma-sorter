@@ -28,8 +28,11 @@
   <div><button id="resetBtn">リセット</button></div>
   <ul id="horseList" class="horse-list"></ul>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js">});
+</script>
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+
   const circled = ["①","②","③","④","⑤","⑥","⑦","⑧","⑨","⑩","⑪","⑫","⑬","⑭","⑮","⑯","⑰","⑱"];
   function getWakuColor(num, total) {
   const wakuRules = {
@@ -132,9 +135,12 @@ headSelect.value = currentHeadCount;
     renderHorseList(currentHeadCount);
   });
 
-  if ('serviceWorker' in navigator) {
+  
+if ('serviceWorker' in navigator) {
+
     navigator.serviceWorker.register('service-worker.js');
   }
+});
 </script>
 </body>
 </html>
