@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#f5f5f5">
-
   <meta charset="UTF-8">
   <title>馬番 並び替えツール</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,12 +38,12 @@
 
 <div class="container">
   <h2>馬番 並び替えツール</h2>
-  <label>頭数:
-    <select id="headCount"></select>
+  <label style="font-size: 1.2em;">頭数:
+    <select id="headCount" style="font-size: 1.1em; padding: 6px 12px; margin-left: 8px;"></select>
   </label>
   
   <div style="margin: 10px 0;">
-    <button id="resetBtn">リセット</button>
+    <button id="resetBtn" style="font-size: 1.1em; padding: 8px 16px;">リセット</button>
   </div>
   <ul id="horseList" class="horse-list"></ul>
     
@@ -91,7 +88,7 @@
       li.textContent = circled[i - 1];
       const hideBtn = document.createElement('button');
       hideBtn.textContent = '×';
-      hideBtn.style.float = 'right';
+      hideBtn.style.float = 'right'; hideBtn.style.fontSize = '1.1em'; hideBtn.style.padding = '2px 8px';
       hideBtn.style.marginLeft = '10px';
       hideBtn.onclick = function() {
         li.style.display = 'none';
@@ -140,10 +137,5 @@
 
 </script>
 
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-  }
-</script>
 </body>
 </html>
